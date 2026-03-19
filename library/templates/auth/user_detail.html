@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}{{ target_user.first_name }} {{ target_user.last_name }} — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/users/" style="font-size:.875rem;color:var(--text-muted);">← All Users</a>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:800px;">
+  <div class="card">
+    <h2 style="margin-bottom:1.25rem;">Profile</h2>
+    <div style="display:flex;flex-direction:column;gap:.75rem;">
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">ID</span>
+        <span>#{{ target_user.id }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">First Name</span>
+        <span>{{ target_user.first_name }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Middle Name</span>
+        <span>{{ target_user.middle_name }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Last Name</span>
+        <span>{{ target_user.last_name }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Email</span>
+        <span style="color:var(--accent);">{{ target_user.email }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Role</span>
+        {% if target_user.role == 1 %}
+          <span class="badge badge-gold">Librarian</span>
+        {% else %}
+          <span class="badge">Reader</span>
+        {% endif %}
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Status</span>
+        {% if target_user.is_active %}
+          <span style="color:#8bc88b;font-size:.85rem;">● Active</span>
+        {% else %}
+          <span style="color:var(--text-muted);font-size:.85rem;">○ Inactive</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:1.25rem;">Actions</h2>
+    <div style="display:flex;flex-direction:column;gap:.75rem;">
+      <a href="/books/user/{{ target_user.id }}/" class="btn btn-outline" style="text-align:center;">
+        View Borrowed Books
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

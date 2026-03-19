@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0e0c;
+            --surface: #1a1916;
+            --border: #2e2c28;
+            --accent: #c9a84c;
+            --accent-dim: #7a6330;
+            --text: #e8e4db;
+            --text-muted: #6b6760;
+            --danger: #b84a3a;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a.active { color: var(--accent); }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover { border-color: var(--accent-dim); }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; text-decoration: none; }
+        .btn-primary { background: var(--accent); color: #0f0e0c; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--border);
+            color: var(--text-muted);
+        }
+
+        .badge-gold { background: #2e2510; color: var(--accent); }
+
+        input, select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 0.9rem;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus { border-color: var(--accent); }
+        input::placeholder { color: var(--text-muted); }
+
+        .tag {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            background: var(--border);
+            color: var(--text-muted);
+            border-radius: 3px;
+            font-size: 0.78rem;
+            margin: 0.1rem;
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .messages { margin-bottom: 1.5rem; }
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            background: #1e2a1e;
+            border: 1px solid #2d4a2d;
+            color: #8bc88b;
+        }
+        .message.error {
+            background: #2a1e1e;
+            border-color: #4a2d2d;
+            color: #c88b8b;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="nav-logo">Library</a>
+    <ul class="nav-links">
+        <li><a href="/books/">Books</a></li>
+        <li><a href="/authors/">Authors</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="/orders/my/">My Orders</a></li>
+            {% if user.is_staff %}
+                <li><a href="/users/">Users</a></li>
+                <li><a href="/orders/">All Orders</a></li>
+            {% endif %}
+            <li><a href="/auth/logout/">Logout ({{ user.first_name|default:user.email }})</a></li>
+        {% else %}
+            <li><a href="/auth/login/">Login</a></li>
+            <li><a href="/auth/register/">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<main>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message {% if message.tags == 'error' %}error{% endif %}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

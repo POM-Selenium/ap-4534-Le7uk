@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Login — Library{% endblock %}
+
+{% block content %}
+<div style="max-width:420px; margin:4rem auto;">
+    <h1 style="text-align:center; margin-bottom:0.5rem;">Login</h1>
+    <p style="text-align:center; color:var(--text-muted); margin-bottom:2rem; font-size:0.9rem;">
+        Don't have an account? <a href="/auth/register/">Register</a>
+    </p>
+
+    <div class="card">
+        <form method="post" style="display:flex; flex-direction:column; gap:1rem;">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div style="color:#b42318;font-size:.9rem;background:#fef3f2;border:1px solid #fecdca;padding:.6rem .75rem;border-radius:.5rem;">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div>
+                <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">Email</label>
+                <input type="email" name="email" required style="width:100%;" placeholder="your@email.com">
+            </div>
+            <div>
+                <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">Password</label>
+                <input type="password" name="password" required style="width:100%;" placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:0.7rem;">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

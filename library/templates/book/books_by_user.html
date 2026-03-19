@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Books by {{ target_user.first_name }} — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/users/{{ target_user.id }}/" style="font-size:.875rem;color:var(--text-muted);">← User Profile</a>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;">
+  <h1>Books borrowed by {{ target_user.first_name }} {{ target_user.last_name }}</h1>
+  <span class="badge badge-gold">{{ books|length }} total</span>
+</div>
+
+{% if books %}
+<div class="grid">
+  {% for book in books %}
+  <a href="/books/{{ book.id }}/" style="text-decoration:none;">
+    <div class="card">
+      <h2 style="font-size:1rem;margin-bottom:.5rem;">{{ book.name }}</h2>
+      <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem;">{{ book.description|truncatechars:80 }}</p>
+      <div>
+        {% for author in book.authors.all %}
+          <span class="tag">{{ author.name }} {{ author.surname }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty">This user has no borrowed books.</div>
+{% endif %}
+{% endblock %}

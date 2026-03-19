@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>{{ action }} Book</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Name *</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Description *</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Count -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Count *</label>
+            {{ form.count }}
+            {% if form.count.errors %}
+                <div class="text-danger small mt-1">{{ form.count.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Authors -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Authors * <span class="text-muted fw-normal">(select at least one)</span></label>
+            <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                {% for checkbox in form.authors %}
+                    <div class="form-check">
+                        {{ checkbox.tag }}
+                        <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                            {{ checkbox.choice_label }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if form.authors.errors %}
+                <div class="text-danger small mt-1">{{ form.authors.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">{{ action }} Book</button>
+            {% if book %}
+                <a href="/books/{{ book.id }}/" class="btn btn-secondary">Cancel</a>
+            {% else %}
+                <a href="/books/" class="btn btn-secondary">Cancel</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

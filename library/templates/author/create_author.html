@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Add Author — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/authors/" style="font-size:.875rem;color:var(--text-muted);">← All Authors</a>
+</div>
+
+<div style="max-width:420px;">
+  <h1>Add New Author</h1>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <form method="post" style="display:flex;flex-direction:column;gap:1rem;">
+      {% csrf_token %}
+      {% if form.errors %}
+      <div style="color:#b42318;font-size:.9rem;background:#fef3f2;border:1px solid #fecdca;padding:.6rem .75rem;border-radius:.5rem;">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div>
+        <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:.35rem;">
+          First Name <span style="color:var(--text-muted);">(max 20 chars)</span>
+        </label>
+        <input type="text" name="name" maxlength="20" placeholder="Ivan" required style="width:100%;">
+      </div>
+      <div>
+        <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:.35rem;">
+          Surname <span style="color:var(--text-muted);">(max 20 chars)</span>
+        </label>
+        <input type="text" name="surname" maxlength="20" placeholder="Franko" required style="width:100%;">
+      </div>
+      <div>
+        <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:.35rem;">
+          Patronymic <span style="color:var(--text-muted);">(max 20 chars)</span>
+        </label>
+        <input type="text" name="patronymic" maxlength="20" placeholder="Yakovych" required style="width:100%;">
+      </div>
+      <div style="display:flex;gap:.75rem;margin-top:.5rem;">
+        <button type="submit" class="btn btn-primary" style="flex:1;padding:.65rem;">Create Author</button>
+        <a href="/authors/" class="btn btn-outline" style="flex:1;padding:.65rem;text-align:center;">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

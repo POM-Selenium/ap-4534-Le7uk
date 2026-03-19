@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Delete Author — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/authors/" style="font-size:.875rem;color:var(--text-muted);">← All Authors</a>
+</div>
+
+<div style="max-width:440px;">
+  <h1>Delete Author</h1>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <p style="font-size:1rem;margin-bottom:1rem;">
+      Are you sure you want to delete
+      <strong style="color:var(--text);">{{ author.name }} {{ author.surname }}</strong>?
+    </p>
+    <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:1.5rem;">
+      This action cannot be undone.
+    </p>
+
+    <form method="post" style="display:flex;gap:.75rem;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger" style="flex:1;padding:.65rem;">
+        Yes, Delete
+      </button>
+      <a href="/authors/" class="btn btn-outline" style="flex:1;padding:.65rem;text-align:center;">
+        Cancel
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

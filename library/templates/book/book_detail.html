@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}{{ book.name }} — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/books/" style="font-size:.875rem;color:var(--text-muted);">← All Books</a>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 320px;gap:2rem;max-width:900px;">
+  <div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.75rem;">
+      <h1 style="margin-bottom:0;">{{ book.name }}</h1>
+      {% if user.is_authenticated and user.role == 1 %}
+      <div style="display:flex;gap:.5rem;flex-shrink:0;">
+        <a href="/books/{{ book.id }}/edit/" class="btn btn-outline" style="font-size:.8rem;padding:.35rem .9rem;">Edit</a>
+        <a href="/books/{{ book.id }}/delete/" class="btn btn-danger" style="font-size:.8rem;padding:.35rem .9rem;">Delete</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem;">
+      {% for author in book.authors.all %}
+        <span class="tag" style="font-size:.85rem;">{{ author.name }} {{ author.surname }}</span>
+      {% empty %}
+        <span class="tag">No authors</span>
+      {% endfor %}
+    </div>
+
+    {% if book.description %}
+    <p style="color:var(--text-muted);line-height:1.7;font-size:.95rem;">{{ book.description }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <div class="card">
+      <div style="text-align:center;padding:.5rem 0 1rem;">
+        {% if book.count > 0 %}
+          <div style="font-size:2rem;font-family:'Playfair Display',serif;color:var(--accent);">{{ book.count }}</div>
+          <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:1.25rem;">copies available</div>
+
+          {% if user.is_authenticated and user.role == 0 %}
+            <form method="post" action="/orders/create/{{ book.id }}/">
+              {% csrf_token %}
+              <div style="margin-bottom:.75rem;">
+                <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:.35rem;">Return by</label>
+                <input type="date" name="plated_end_at" required style="width:100%;"
+                  min="{{ today }}" value="{{ default_return }}">
+              </div>
+              {% if order_error %}
+                <div style="color:#e74c3c;font-size:.8rem;margin-bottom:.75rem;">{{ order_error }}</div>
+              {% endif %}
+              <button type="submit" class="btn btn-primary" style="width:100%;">Borrow This Book</button>
+            </form>
+
+          {% elif not user.is_authenticated %}
+            <a href="/auth/login/" class="btn btn-outline" style="width:100%;display:block;text-align:center;">Login to Borrow</a>
+
+          {% else %}
+            <span class="badge" style="display:block;text-align:center;padding:.6rem;">Librarians cannot borrow</span>
+          {% endif %}
+
+        {% else %}
+          <div style="color:var(--text-muted);font-size:.9rem;padding:.5rem 0;">Not available</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

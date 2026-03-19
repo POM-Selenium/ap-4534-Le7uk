@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Delete {{ book.name }} — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/books/{{ book.id }}/" style="font-size:.875rem;color:var(--text-muted);">← Back to Book</a>
+</div>
+
+<div style="max-width:460px;">
+  <h1>Delete Book</h1>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <p style="font-size:1rem;margin-bottom:.75rem;">
+      Are you sure you want to delete
+      <strong style="color:var(--text);">{{ book.name }}</strong>?
+    </p>
+    <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:1.5rem;">
+      This will also delete all associated orders. This action cannot be undone.
+    </p>
+
+    <form method="post" style="display:flex;gap:.75rem;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger" style="flex:1;padding:.65rem;">
+        Yes, Delete
+      </button>
+      <a href="/books/{{ book.id }}/" class="btn btn-outline" style="flex:1;padding:.65rem;text-align:center;">
+        Cancel
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

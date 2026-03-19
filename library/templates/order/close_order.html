@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Close Order #{{ order.id }} — Library{% endblock %}
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="/orders/" style="font-size:.875rem;color:var(--text-muted);">← All Orders</a>
+</div>
+
+<div style="max-width:480px;">
+  <h1>Close Order #{{ order.id }}</h1>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <div style="display:flex;flex-direction:column;gap:.85rem;margin-bottom:1.5rem;">
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Book</span>
+        <a href="/books/{{ order.book.id }}/">{{ order.book.name }}</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Reader</span>
+        <a href="/users/{{ order.user.id }}/">{{ order.user.first_name }} {{ order.user.last_name }}</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Ordered on</span>
+        <span>{{ order.created_at|date:"d M Y" }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--text-muted);font-size:.875rem;">Due date</span>
+        <span>{{ order.plated_end_at|date:"d M Y" }}</span>
+      </div>
+    </div>
+
+    <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:1.25rem;">
+      This will mark the book as returned and increase available copies by 1.
+    </p>
+
+    <form method="post" style="display:flex;gap:.75rem;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" style="flex:1;padding:.65rem;">
+        Confirm Return
+      </button>
+      <a href="/orders/" class="btn btn-outline" style="flex:1;padding:.65rem;text-align:center;">
+        Cancel
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}
